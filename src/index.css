@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+:root {
+  --ivory: #f7f2ea;
+  --beige: #e8ded0;
+  --charcoal: #24211e;
+  --gold: #b8955a;
+  --white: #ffffff;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--ivory);
+  color: var(--charcoal);
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--white);
+}
