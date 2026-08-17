@@ -1,9 +1,11 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   FaLocationDot,
   FaArrowRight,
   FaCalendarDays,
+  FaHeart,
 } from "react-icons/fa6";
+import { useState } from "react";
 import weddingData from "../data/weddingData";
 
 const eventImages = [
@@ -12,33 +14,166 @@ const eventImages = [
 ];
 
 const EventsSection = () => {
+  const [hearts, setHearts] = useState([]);
+
+  /* ================================================= */
+  /* CREATE FLOATING HEARTS */
+  /* ================================================= */
+
+  const createHeart = (e) => {
+    // Don't trigger the heart animation when clicking
+    // the Google Maps button.
+    if (e.target.closest("a")) return;
+
+    const rect = e.currentTarget.getBoundingClientRect();
+
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const newHearts = Array.from({ length: 4 }, (_, index) => ({
+      id: Date.now() + Math.random() + index,
+
+      x: x + (Math.random() * 30 - 15),
+
+      y: y + (Math.random() * 20 - 10),
+
+      size: Math.random() * 8 + 11,
+
+      drift: Math.random() * 90 - 45,
+
+      rotate: Math.random() * 30 - 15,
+    }));
+
+    setHearts((prev) => [...prev, ...newHearts]);
+
+    setTimeout(() => {
+      setHearts((prev) =>
+        prev.filter(
+          (heart) =>
+            !newHearts.some(
+              (newHeart) => newHeart.id === heart.id
+            )
+        )
+      );
+    }, 2200);
+  };
+
   return (
-    <section className="relative bg-[#f7f2ea] py-28 md:py-36 px-5 sm:px-8 overflow-hidden">
+    <section
+      onClick={createHeart}
+      className="
+        relative
+        bg-[#f7f2ea]
+        py-28
+        md:py-36
+        px-5
+        sm:px-8
+        overflow-hidden
+        cursor-pointer
+      "
+    >
 
-      {/* Soft background decoration */}
-      <div className="
-        absolute
-        -top-40
-        -right-40
-        w-[500px]
-        h-[500px]
-        rounded-full
-        bg-[#b8955a]/[0.035]
-        blur-3xl
-        pointer-events-none
-      " />
+      {/* ================================================= */}
+      {/* FLOATING HEARTS */}
+      {/* ================================================= */}
 
-      <div className="
-        absolute
-        bottom-0
-        -left-40
-        w-[400px]
-        h-[400px]
-        rounded-full
-        bg-[#b8955a]/[0.025]
-        blur-3xl
-        pointer-events-none
-      " />
+      <AnimatePresence>
+        {hearts.map((heart) => (
+          <motion.div
+            key={heart.id}
+            initial={{
+              opacity: 0,
+              scale: 0.2,
+              x: heart.x,
+              y: heart.y,
+              rotate: heart.rotate,
+            }}
+            animate={{
+              opacity: [0, 1, 1, 0],
+
+              scale: [
+                0.2,
+                1.15,
+                0.9,
+                0.45,
+              ],
+
+              x: [
+                heart.x,
+                heart.x + heart.drift * 0.3,
+                heart.x - heart.drift * 0.2,
+                heart.x + heart.drift,
+              ],
+
+              y: [
+                heart.y,
+                heart.y - 50,
+                heart.y - 120,
+                heart.y - 190,
+              ],
+
+              rotate: [
+                heart.rotate,
+                heart.rotate + 10,
+                heart.rotate - 8,
+                heart.rotate + 15,
+              ],
+            }}
+            transition={{
+              duration: 2,
+              ease: "easeOut",
+            }}
+            className="
+              absolute
+              left-0
+              top-0
+              z-[100]
+              pointer-events-none
+              text-[#b8955a]
+            "
+            style={{
+              fontSize: `${heart.size}px`,
+              filter:
+                "drop-shadow(0 4px 10px rgba(184,149,90,0.3))",
+            }}
+          >
+            <FaHeart />
+          </motion.div>
+        ))}
+      </AnimatePresence>
+
+
+      {/* ================================================= */}
+      {/* SOFT BACKGROUND DECORATION */}
+      {/* ================================================= */}
+
+      <div
+        className="
+          absolute
+          -top-40
+          -right-40
+          w-[500px]
+          h-[500px]
+          rounded-full
+          bg-[#b8955a]/[0.035]
+          blur-3xl
+          pointer-events-none
+        "
+      />
+
+      <div
+        className="
+          absolute
+          bottom-0
+          -left-40
+          w-[400px]
+          h-[400px]
+          rounded-full
+          bg-[#b8955a]/[0.025]
+          blur-3xl
+          pointer-events-none
+        "
+      />
 
 
       <div className="relative max-w-6xl mx-auto">
@@ -65,65 +200,94 @@ const EventsSection = () => {
             duration: 1,
             ease: [0.22, 1, 0.36, 1],
           }}
-          className="text-center mb-24 md:mb-32"
+          className="
+            text-center
+            mb-24
+            md:mb-32
+          "
         >
 
-          <p className="
-            text-[9px]
-            sm:text-[10px]
-            md:text-xs
-            uppercase
-            tracking-[0.5em]
-            text-[#b8955a]
-          ">
+          <p
+            className="
+              text-[9px]
+              sm:text-[10px]
+              md:text-xs
+              uppercase
+              tracking-[0.5em]
+              text-[#b8955a]
+            "
+          >
             Save the dates
           </p>
 
 
-          <h2 className="
-            font-serif
-            text-5xl
-            sm:text-6xl
-            md:text-8xl
-            mt-5
-            text-[#24211e]
-          ">
+          <h2
+            className="
+              font-serif
+              text-5xl
+              sm:text-6xl
+              md:text-8xl
+              mt-5
+              text-[#24211e]
+            "
+          >
             Wedding Celebrations
           </h2>
 
 
           {/* Divider */}
-          <div className="
-            flex
-            items-center
-            justify-center
-            gap-3
-            mt-7
-          ">
 
-            <div className="w-10 md:w-16 h-px bg-[#b8955a]/40" />
+          <div
+            className="
+              flex
+              items-center
+              justify-center
+              gap-3
+              mt-7
+            "
+          >
 
-            <div className="
-              w-1.5
-              h-1.5
-              rotate-45
-              bg-[#b8955a]
-            " />
+            <div
+              className="
+                w-10
+                md:w-16
+                h-px
+                bg-[#b8955a]/40
+              "
+            />
 
-            <div className="w-10 md:w-16 h-px bg-[#b8955a]/40" />
+            <div
+              className="
+                w-1.5
+                h-1.5
+                rotate-45
+                bg-[#b8955a]
+              "
+            />
+
+            <div
+              className="
+                w-10
+                md:w-16
+                h-px
+                bg-[#b8955a]/40
+              "
+            />
 
           </div>
 
 
-          <p className="
-            max-w-xl
-            mx-auto
-            mt-6
-            text-sm
-            md:text-base
-            text-gray-500
-            leading-7
-          ">
+          <p
+            className="
+              max-w-xl
+              mx-auto
+              mt-6
+              text-sm
+              md:text-base
+              text-gray-500
+              leading-7
+            "
+          >
             Two beautiful celebrations, surrounded by the people
             who make our lives special.
           </p>
@@ -183,10 +347,12 @@ const EventsSection = () => {
                 {/* IMAGE */}
                 {/* ================================================= */}
 
-                <div className="
-                  relative
-                  group
-                ">
+                <div
+                  className="
+                    relative
+                    group
+                  "
+                >
 
                   <motion.div
                     whileHover={{
@@ -206,21 +372,26 @@ const EventsSection = () => {
                   >
 
                     {/* Gold frame */}
-                    <div className="
-                      absolute
-                      inset-3
-                      md:inset-4
-                      border
-                      border-[#b8955a]/35
-                      pointer-events-none
-                      z-20
-                    " />
+
+                    <div
+                      className="
+                        absolute
+                        inset-3
+                        md:inset-4
+                        border
+                        border-[#b8955a]/35
+                        pointer-events-none
+                        z-20
+                      "
+                    />
 
 
-                    <div className="
-                      relative
-                      overflow-hidden
-                    ">
+                    <div
+                      className="
+                        relative
+                        overflow-hidden
+                      "
+                    >
 
                       <motion.img
                         src={eventImages[index]}
@@ -254,15 +425,18 @@ const EventsSection = () => {
 
 
                       {/* Image overlay */}
-                      <div className="
-                        absolute
-                        inset-0
-                        bg-gradient-to-t
-                        from-black/30
-                        via-transparent
-                        to-transparent
-                        pointer-events-none
-                      " />
+
+                      <div
+                        className="
+                          absolute
+                          inset-0
+                          bg-gradient-to-t
+                          from-black/30
+                          via-transparent
+                          to-transparent
+                          pointer-events-none
+                        "
+                      />
 
                     </div>
 
@@ -270,30 +444,35 @@ const EventsSection = () => {
 
 
                   {/* Floating event number */}
-                  <div className="
-                    absolute
-                    -bottom-5
-                    left-5
-                    md:left-8
-                    w-12
-                    h-12
-                    md:w-14
-                    md:h-14
-                    bg-[#f7f2ea]
-                    border
-                    border-[#b8955a]/40
-                    flex
-                    items-center
-                    justify-center
-                    z-30
-                  ">
 
-                    <span className="
-                      font-serif
-                      text-lg
-                      md:text-xl
-                      text-[#8c7252]
-                    ">
+                  <div
+                    className="
+                      absolute
+                      -bottom-5
+                      left-5
+                      md:left-8
+                      w-12
+                      h-12
+                      md:w-14
+                      md:h-14
+                      bg-[#f7f2ea]
+                      border
+                      border-[#b8955a]/40
+                      flex
+                      items-center
+                      justify-center
+                      z-30
+                    "
+                  >
+
+                    <span
+                      className="
+                        font-serif
+                        text-lg
+                        md:text-xl
+                        text-[#8c7252]
+                      "
+                    >
                       {String(index + 1).padStart(2, "0")}
                     </span>
 
@@ -318,31 +497,38 @@ const EventsSection = () => {
                 >
 
                   {/* Small label */}
-                  <p className="
-                    text-[9px]
-                    md:text-[10px]
-                    uppercase
-                    tracking-[0.45em]
-                    text-[#b8955a]
-                  ">
+
+                  <p
+                    className="
+                      text-[9px]
+                      md:text-[10px]
+                      uppercase
+                      tracking-[0.45em]
+                      text-[#b8955a]
+                    "
+                  >
                     Celebration {String(index + 1).padStart(2, "0")}
                   </p>
 
 
                   {/* Event title */}
-                  <h3 className="
-                    font-serif
-                    text-5xl
-                    sm:text-6xl
-                    md:text-7xl
-                    mt-4
-                    text-[#24211e]
-                  ">
+
+                  <h3
+                    className="
+                      font-serif
+                      text-5xl
+                      sm:text-6xl
+                      md:text-7xl
+                      mt-4
+                      text-[#24211e]
+                    "
+                  >
                     {event.title}
                   </h3>
 
 
                   {/* Decorative line */}
+
                   <div
                     className={`
                       flex
@@ -358,31 +544,43 @@ const EventsSection = () => {
                     `}
                   >
 
-                    <div className="w-10 h-px bg-[#b8955a]/50" />
+                    <div
+                      className="
+                        w-10
+                        h-px
+                        bg-[#b8955a]/50
+                      "
+                    />
 
-                    <div className="
-                      w-1.5
-                      h-1.5
-                      rotate-45
-                      bg-[#b8955a]
-                    " />
+                    <div
+                      className="
+                        w-1.5
+                        h-1.5
+                        rotate-45
+                        bg-[#b8955a]
+                      "
+                    />
 
                   </div>
 
 
                   {/* Date */}
-                  <div className="
-                    flex
-                    items-center
-                    gap-4
-                    mt-8
-                  "
+
+                  <div
+                    className="
+                      flex
+                      items-center
+                      gap-4
+                      mt-8
+                    "
                   >
 
-                    <FaCalendarDays className="
-                      text-[#b8955a]
-                      text-lg
-                    " />
+                    <FaCalendarDays
+                      className="
+                        text-[#b8955a]
+                        text-lg
+                      "
+                    />
 
                     <div
                       className={
@@ -392,22 +590,26 @@ const EventsSection = () => {
                       }
                     >
 
-                      <p className="
-                        text-lg
-                        md:text-xl
-                        text-gray-700
-                        font-medium
-                      ">
+                      <p
+                        className="
+                          text-lg
+                          md:text-xl
+                          text-gray-700
+                          font-medium
+                        "
+                      >
                         {event.date}
                       </p>
 
-                      <p className="
-                        text-xs
-                        uppercase
-                        tracking-[0.3em]
-                        text-gray-500
-                        mt-1
-                      ">
+                      <p
+                        className="
+                          text-xs
+                          uppercase
+                          tracking-[0.3em]
+                          text-gray-500
+                          mt-1
+                        "
+                      >
                         {event.time}
                       </p>
 
@@ -417,33 +619,42 @@ const EventsSection = () => {
 
 
                   {/* Location */}
-                  <div className="
-                    flex
-                    items-start
-                    gap-4
-                    mt-7
-                    text-gray-500
-                  ">
 
-                    <FaLocationDot className="
-                      mt-1
-                      text-[#b8955a]
-                      flex-shrink-0
-                    " />
+                  <div
+                    className="
+                      flex
+                      items-start
+                      gap-4
+                      mt-7
+                      text-gray-500
+                    "
+                  >
+
+                    <FaLocationDot
+                      className="
+                        mt-1
+                        text-[#b8955a]
+                        flex-shrink-0
+                      "
+                    />
 
                     <div>
 
-                      <p className="
-                        text-gray-700
-                        font-medium
-                      ">
+                      <p
+                        className="
+                          text-gray-700
+                          font-medium
+                        "
+                      >
                         {event.venue}
                       </p>
 
-                      <p className="
-                        text-sm
-                        mt-1
-                      ">
+                      <p
+                        className="
+                          text-sm
+                          mt-1
+                        "
+                      >
                         {event.address}
                       </p>
 
@@ -453,6 +664,7 @@ const EventsSection = () => {
 
 
                   {/* Map button */}
+
                   <div
                     className={`
                       mt-8
@@ -544,21 +756,25 @@ const EventsSection = () => {
           "
         >
 
-          <div className="
-            w-px
-            h-12
-            bg-gradient-to-b
-            from-[#b8955a]/50
-            to-transparent
-          " />
+          <div
+            className="
+              w-px
+              h-12
+              bg-gradient-to-b
+              from-[#b8955a]/50
+              to-transparent
+            "
+          />
 
-          <p className="
-            mt-5
-            text-[9px]
-            uppercase
-            tracking-[0.4em]
-            text-gray-400
-          ">
+          <p
+            className="
+              mt-5
+              text-[9px]
+              uppercase
+              tracking-[0.4em]
+              text-gray-400
+            "
+          >
             We can't wait to celebrate with you
           </p>
 

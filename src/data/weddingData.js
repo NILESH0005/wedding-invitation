@@ -28,7 +28,8 @@ const weddingData = {
       time: "4:00 PM",
       venue: "Wedding Venue",
       address: "Dehradun, Uttarakhand",
-      mapsUrl: "https://maps.google.com",
+      mapsUrl:
+        "https://www.google.com/maps/search/?api=1&query=Janki+Farms",
     },
 
     {
@@ -38,7 +39,8 @@ const weddingData = {
       time: "7:00 PM",
       venue: "Reception Venue",
       address: "Dehradun, Uttarakhand",
-      mapsUrl: "https://maps.google.com",
+      mapsUrl:
+        "https://www.google.com/maps/search/?api=1&query=Janki+Farms",
     },
   ],
 

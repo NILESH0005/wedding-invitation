@@ -1,35 +1,175 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { FaHeart } from "react-icons/fa6";
+import { useState } from "react";
 import weddingData from "../data/weddingData";
 
 const CoupleSection = () => {
+  const [hearts, setHearts] = useState([]);
+
+  const createHeart = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const id = Date.now() + Math.random();
+
+    setHearts((prev) => [
+      ...prev,
+      {
+        id,
+        x,
+        y,
+        size: Math.random() * 10 + 18,
+        drift: Math.random() * 80 - 40,
+        duration: Math.random() * 0.6 + 1.8,
+      },
+    ]);
+
+    setTimeout(() => {
+      setHearts((prev) => prev.filter((heart) => heart.id !== id));
+    }, 2600);
+  };
+
   return (
-    <section className="relative bg-[#f7f2ea] py-24 md:py-28 px-4 sm:px-6 overflow-hidden">
+    <section
+      onClick={createHeart}
+      className="
+        relative
+        bg-[#f7f2ea]
+        py-24
+        md:py-28
+        px-4
+        sm:px-6
+        overflow-hidden
+        cursor-pointer
+      "
+    >
+
+      {/* ================================================= */}
+      {/* FLOATING HEARTS */}
+      {/* ================================================= */}
+
+      <AnimatePresence>
+        {hearts.map((heart) => (
+          <motion.div
+            key={heart.id}
+            initial={{
+              opacity: 0,
+              scale: 0.2,
+              x: heart.x - heart.size / 2,
+              y: heart.y - heart.size / 2,
+              rotate: -15,
+            }}
+            animate={{
+              opacity: [0, 1, 1, 0],
+              scale: [0.2, 1.15, 0.9, 0.7],
+              x: [
+                heart.x - heart.size / 2,
+                heart.x - heart.size / 2 + heart.drift * 0.35,
+                heart.x - heart.size / 2 - heart.drift * 0.2,
+                heart.x - heart.size / 2 + heart.drift,
+              ],
+              y: [
+                heart.y - heart.size / 2,
+                heart.y - 60,
+                heart.y - 130,
+                heart.y - 200,
+              ],
+              rotate: [-15, 8, -5, 12],
+            }}
+            transition={{
+              duration: heart.duration,
+              ease: "easeOut",
+            }}
+            className="
+              absolute
+              z-50
+              pointer-events-none
+              text-[#b8955a]
+            "
+            style={{
+              left: 0,
+              top: 0,
+              fontSize: `${heart.size}px`,
+              filter: "drop-shadow(0 4px 8px rgba(184,149,90,0.25))",
+            }}
+          >
+            <FaHeart />
+          </motion.div>
+        ))}
+      </AnimatePresence>
+
+
+      {/* ================================================= */}
+      {/* CONTENT */}
+      {/* ================================================= */}
 
       <div className="max-w-6xl mx-auto">
 
         {/* Heading */}
+
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
+          initial={{
+            opacity: 0,
+            y: 30,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+            amount: 0.3,
+          }}
           transition={{
             duration: 0.9,
             ease: [0.22, 1, 0.36, 1],
           }}
           className="text-center"
         >
-          <p className="text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.45em] text-[#b8955a]">
+
+          <p
+            className="
+              text-[9px]
+              sm:text-[10px]
+              md:text-xs
+              uppercase
+              tracking-[0.45em]
+              text-[#b8955a]
+            "
+          >
             Two hearts
           </p>
 
-          <h2 className="mt-4 md:mt-5 font-serif text-4xl sm:text-5xl md:text-7xl">
+          <h2
+            className="
+              mt-4
+              md:mt-5
+              font-serif
+              text-4xl
+              sm:text-5xl
+              md:text-7xl
+            "
+          >
             The Couple
           </h2>
 
-          <p className="max-w-xl mx-auto mt-5 md:mt-6 text-sm md:text-base text-gray-500 leading-7">
+          <p
+            className="
+              max-w-xl
+              mx-auto
+              mt-5
+              md:mt-6
+              text-sm
+              md:text-base
+              text-gray-500
+              leading-7
+            "
+          >
             Two people, two stories, one beautiful journey.
           </p>
+
         </motion.div>
 
 
@@ -37,19 +177,20 @@ const CoupleSection = () => {
         {/* COUPLE */}
         {/* ================================================= */}
 
-        <div className="
-          relative
-          grid
-          grid-cols-2
-          gap-3
-          sm:gap-6
-          md:gap-24
-          mt-14
-          sm:mt-16
-          md:mt-20
-          items-start
-        ">
-
+        <div
+          className="
+            relative
+            grid
+            grid-cols-2
+            gap-3
+            sm:gap-6
+            md:gap-24
+            mt-14
+            sm:mt-16
+            md:mt-20
+            items-start
+          "
+        >
 
           {/* ================================================= */}
           {/* GROOM */}
@@ -75,38 +216,41 @@ const CoupleSection = () => {
             className="text-center"
           >
 
-            {/* Photo */}
-            <div className="
-              relative
-              mx-auto
-              w-full
-              max-w-[150px]
-              sm:max-w-[190px]
-              md:max-w-[290px]
-            ">
+            <div
+              className="
+                relative
+                mx-auto
+                w-full
+                max-w-[150px]
+                sm:max-w-[190px]
+                md:max-w-[290px]
+              "
+            >
 
-              {/* Outer frame */}
-              <div className="
-                absolute
-                -inset-1.5
-                sm:-inset-2
-                md:-inset-3
-                border
-                border-[#b8955a]/40
-                rounded-t-full
-              " />
+              <div
+                className="
+                  absolute
+                  -inset-1.5
+                  sm:-inset-2
+                  md:-inset-3
+                  border
+                  border-[#b8955a]/40
+                  rounded-t-full
+                "
+              />
 
-              {/* Inner gold line */}
-              <div className="
-                absolute
-                -inset-[3px]
-                sm:-inset-1
-                md:-inset-1.5
-                border
-                border-[#b8955a]/15
-                rounded-t-full
-                pointer-events-none
-              " />
+              <div
+                className="
+                  absolute
+                  -inset-[3px]
+                  sm:-inset-1
+                  md:-inset-1.5
+                  border
+                  border-[#b8955a]/15
+                  rounded-t-full
+                  pointer-events-none
+                "
+              />
 
               <motion.img
                 whileHover={{
@@ -130,39 +274,38 @@ const CoupleSection = () => {
 
             </div>
 
-
-            {/* Label */}
-            <p className="
-              mt-6
-              sm:mt-7
-              md:mt-8
-              text-[8px]
-              sm:text-[9px]
-              md:text-[10px]
-              uppercase
-              tracking-[0.3em]
-              md:tracking-[0.4em]
-              text-[#b8955a]
-            ">
+            <p
+              className="
+                mt-6
+                sm:mt-7
+                md:mt-8
+                text-[8px]
+                sm:text-[9px]
+                md:text-[10px]
+                uppercase
+                tracking-[0.3em]
+                md:tracking-[0.4em]
+                text-[#b8955a]
+              "
+            >
               The Groom
             </p>
 
-
-            {/* Name */}
-            <h3 className="
-              mt-2
-              md:mt-3
-              font-serif
-              text-2xl
-              sm:text-3xl
-              md:text-5xl
-              text-[#24211e]
-            ">
+            <h3
+              className="
+                mt-2
+                md:mt-3
+                font-serif
+                text-2xl
+                sm:text-3xl
+                md:text-5xl
+                text-[#24211e]
+              "
+            >
               {weddingData.groom.name}
             </h3>
 
           </motion.div>
-
 
 
           {/* ================================================= */}
@@ -189,38 +332,41 @@ const CoupleSection = () => {
             className="text-center"
           >
 
-            {/* Photo */}
-            <div className="
-              relative
-              mx-auto
-              w-full
-              max-w-[150px]
-              sm:max-w-[190px]
-              md:max-w-[290px]
-            ">
+            <div
+              className="
+                relative
+                mx-auto
+                w-full
+                max-w-[150px]
+                sm:max-w-[190px]
+                md:max-w-[290px]
+              "
+            >
 
-              {/* Outer frame */}
-              <div className="
-                absolute
-                -inset-1.5
-                sm:-inset-2
-                md:-inset-3
-                border
-                border-[#b8955a]/40
-                rounded-t-full
-              " />
+              <div
+                className="
+                  absolute
+                  -inset-1.5
+                  sm:-inset-2
+                  md:-inset-3
+                  border
+                  border-[#b8955a]/40
+                  rounded-t-full
+                "
+              />
 
-              {/* Inner gold line */}
-              <div className="
-                absolute
-                -inset-[3px]
-                sm:-inset-1
-                md:-inset-1.5
-                border
-                border-[#b8955a]/15
-                rounded-t-full
-                pointer-events-none
-              " />
+              <div
+                className="
+                  absolute
+                  -inset-[3px]
+                  sm:-inset-1
+                  md:-inset-1.5
+                  border
+                  border-[#b8955a]/15
+                  rounded-t-full
+                  pointer-events-none
+                "
+              />
 
               <motion.img
                 whileHover={{
@@ -244,39 +390,38 @@ const CoupleSection = () => {
 
             </div>
 
-
-            {/* Label */}
-            <p className="
-              mt-6
-              sm:mt-7
-              md:mt-8
-              text-[8px]
-              sm:text-[9px]
-              md:text-[10px]
-              uppercase
-              tracking-[0.3em]
-              md:tracking-[0.4em]
-              text-[#b8955a]
-            ">
+            <p
+              className="
+                mt-6
+                sm:mt-7
+                md:mt-8
+                text-[8px]
+                sm:text-[9px]
+                md:text-[10px]
+                uppercase
+                tracking-[0.3em]
+                md:tracking-[0.4em]
+                text-[#b8955a]
+              "
+            >
               The Bride
             </p>
 
-
-            {/* Name */}
-            <h3 className="
-              mt-2
-              md:mt-3
-              font-serif
-              text-2xl
-              sm:text-3xl
-              md:text-5xl
-              text-[#24211e]
-            ">
+            <h3
+              className="
+                mt-2
+                md:mt-3
+                font-serif
+                text-2xl
+                sm:text-3xl
+                md:text-5xl
+                text-[#24211e]
+              "
+            >
               {weddingData.bride.name}
             </h3>
 
           </motion.div>
-
 
 
           {/* ================================================= */}
@@ -310,23 +455,19 @@ const CoupleSection = () => {
               md:top-[45%]
               -translate-x-1/2
               -translate-y-1/2
-
               w-9
               h-9
               sm:w-11
               sm:h-11
               md:w-24
               md:h-24
-
               rounded-full
               bg-[#f7f2ea]
               border
               border-[#b8955a]/50
-
               flex
               items-center
               justify-center
-
               shadow-[0_8px_25px_rgba(0,0,0,0.08)]
               z-10
             "
@@ -347,6 +488,7 @@ const CoupleSection = () => {
 
 
         {/* Bottom decoration */}
+
         <motion.div
           initial={{
             opacity: 0,
@@ -375,12 +517,14 @@ const CoupleSection = () => {
 
           <div className="w-10 md:w-16 h-px bg-[#b8955a]/30" />
 
-          <div className="
-            w-1.5
-            h-1.5
-            rotate-45
-            bg-[#b8955a]
-          " />
+          <div
+            className="
+              w-1.5
+              h-1.5
+              rotate-45
+              bg-[#b8955a]
+            "
+          />
 
           <div className="w-10 md:w-16 h-px bg-[#b8955a]/30" />
 
