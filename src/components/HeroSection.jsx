@@ -5,7 +5,6 @@ import weddingData from "../data/weddingData";
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen overflow-hidden bg-black">
-
       {/* Background image */}
       <motion.img
         initial={{ scale: 1.08 }}
@@ -46,130 +45,170 @@ const HeroSection = () => {
       {/* Hero content */}
       <div
         className="
-          relative
-          z-10
-          min-h-screen
-          flex
-          flex-col
-          items-center
-          justify-end
-          text-center
-          text-white
-          px-6
-          pb-24
-          md:pb-28
-        "
+    relative
+    z-10
+    min-h-screen
+    flex
+    flex-col
+    items-center
+    justify-end
+    text-center
+    text-white
+    px-6
+    pb-24
+    md:pb-28
+  "
       >
-
-        {/* Small label */}
+        {/* Date */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{
             duration: 1,
-            delay: 0.4,
+            delay: 0.5,
           }}
           className="
-            uppercase
-            tracking-[0.5em]
-            text-[10px]
-            md:text-xs
-            mb-6
-            text-white/80
-          "
+      text-[10px]
+      md:text-xs
+      uppercase
+      tracking-[0.5em]
+      text-white/80
+      mb-6
+    "
         >
-          We are getting married
+          01 — 03 December 2026
         </motion.p>
 
-        {/* Names */}
+        {/* Main statement */}
         <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{
+            opacity: 0,
+            y: 40,
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
           transition={{
             duration: 1.2,
-            delay: 0.6,
+            delay: 0.7,
+            ease: [0.22, 1, 0.36, 1],
           }}
           className="
-            font-serif
-            text-6xl
-            sm:text-7xl
-            md:text-9xl
-            leading-none
-            tracking-tight
-          "
+      font-serif
+      text-5xl
+      sm:text-6xl
+      md:text-8xl
+      lg:text-9xl
+      leading-[0.9]
+      tracking-tight
+    "
         >
-          {weddingData.groom.name}
+          A New
+          <br />
+          Chapter
         </motion.h1>
 
-        {/* Ampersand */}
+        {/* Gold divider */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.7 }}
-          animate={{ opacity: 1, scale: 1 }}
+          initial={{
+            opacity: 0,
+            scaleX: 0,
+          }}
+          animate={{
+            opacity: 1,
+            scaleX: 1,
+          }}
           transition={{
             duration: 0.8,
-            delay: 0.9,
+            delay: 1.1,
           }}
           className="
-            text-3xl
-            md:text-4xl
-            my-3
-            text-[#d8b875]
-            font-serif
-          "
+      flex
+      items-center
+      gap-3
+      my-6
+    "
         >
-          weds
+          <div className="w-10 md:w-16 h-px bg-[#d8b875]/70" />
+
+          <div
+            className="
+      w-1.5
+      h-1.5
+      rotate-45
+      bg-[#d8b875]
+    "
+          />
+
+          <div className="w-10 md:w-16 h-px bg-[#d8b875]/70" />
         </motion.div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 1.2,
-            delay: 1,
+        {/* Supporting text */}
+        <motion.p
+          initial={{
+            opacity: 0,
+            y: 20,
           }}
-          className="
-            font-serif
-            text-6xl
-            sm:text-7xl
-            md:text-9xl
-            leading-none
-            tracking-tight
-          "
-        >
-          {weddingData.bride.name}
-        </motion.h1>
-
-        {/* Date */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
           transition={{
             duration: 1,
-            delay: 1.4,
+            delay: 1.3,
           }}
-          className="mt-8"
+          className="
+      max-w-md
+      text-sm
+      md:text-base
+      text-white/75
+      leading-7
+    "
         >
-          <p className="text-sm md:text-base tracking-[0.3em]">
-            02 • 12 • 2026
-          </p>
-        </motion.div>
+          With love, laughter and a lifetime ahead,
+          <br />
+          our beautiful journey continues.
+        </motion.p>
 
         {/* Scroll indicator */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={{
+            opacity: 0,
+          }}
+          animate={{
+            opacity: 1,
+          }}
           transition={{
             duration: 1,
             delay: 2,
           }}
-          className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+          className="
+      absolute
+      bottom-6
+      left-1/2
+      -translate-x-1/2
+      flex
+      flex-col
+      items-center
+      gap-2
+    "
         >
-          <span className="text-[9px] uppercase tracking-[0.4em] text-white/60">
-            Scroll
+          <span
+            className="
+      text-[9px]
+      uppercase
+      tracking-[0.4em]
+      text-white/60
+    "
+          >
+            Scroll to explore
           </span>
 
           <motion.div
-            animate={{ y: [0, 6, 0] }}
+            animate={{
+              y: [0, 6, 0],
+            }}
             transition={{
               duration: 1.5,
               repeat: Infinity,
@@ -178,9 +217,7 @@ const HeroSection = () => {
             <FaChevronDown className="text-white/70 text-xs" />
           </motion.div>
         </motion.div>
-
       </div>
-
     </section>
   );
 };
